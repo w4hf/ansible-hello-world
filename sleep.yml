@@ -1,0 +1,7 @@
+- name: Sleep for 20 seconds
+  gather_facts: false
+  hosts: localhost
+  tasks:
+    - name: sleep
+      ansible.builtin.pause:
+        seconds: 20
