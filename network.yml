@@ -1,7 +1,13 @@
 - hosts: all
   gather_facts: false
   tasks:
+
   - name: Retrieve VyOS version info
     vyos.vyos.vyos_command:
       commands: show version
     when: ansible_network_os == 'vyos.vyos.vyos'
+
+  - name: Retrieve Arista version info
+    arista.eos.eos_command:
+      commands: show version
+    when: ansible_network_os == 'arista.eos.eos'
