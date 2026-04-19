@@ -1,0 +1,7 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+  - name: Retrieve VyOS version info
+    vyos.vyos.vyos_command:
+      commands: show version
+    when: ansible_network_os == 'vyos.vyos.vyos'
