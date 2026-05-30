@@ -1,0 +1,7 @@
+- name: Read persistent data
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Print data
+      ansible.builtin.debug:
+        var: my_dict
