@@ -3,7 +3,7 @@
   gather_facts: false
   tasks:
     - name: Create and Add items to dictionary
-      set_stats: 
+      ansible.builtin.set_stats: 
         data:
           my_dict:
             first_name: James
