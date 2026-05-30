@@ -1,0 +1,12 @@
+- name: Set persistent data
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Create and Add items to dictionary
+      set_stats: 
+        data:
+          my_dict:
+            first_name: James
+            last_name: Bond
+            codename: '007'
+            profession: secret agent
