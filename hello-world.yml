@@ -1,6 +1,6 @@
 ---
 - name: Hello World Playbook
-  hosts: localhost
+  hosts: all
   gather_facts: true
   
   tasks:
