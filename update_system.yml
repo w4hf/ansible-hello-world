@@ -23,19 +23,19 @@
       when: ansible_os_family == "RedHat"
 
     # --- SUSE / openSUSE Family ---
-    - name: Upgrade all packages (SUSE)
-      ansible.builtin.zypper:
-        name: "*"
-        state: latest
-        update_cache: true
-      when: ansible_os_family == "Suse"
+    # - name: Upgrade all packages (SUSE)
+    #   community.general.zypper:
+    #     name: "*"
+    #     state: latest
+    #     update_cache: true
+    #   when: ansible_os_family == "Suse"
 
     # --- Arch Linux Family ---
-    - name: Upgrade all packages (Arch Linux)
-      community.general.pacman:
-        update_cache: true
-        upgrade: true
-      when: ansible_os_family == "Archlinux"
+    # - name: Upgrade all packages (Arch Linux)
+    #   community.general.pacman:
+    #     update_cache: true
+    #     upgrade: true
+    #   when: ansible_os_family == "Archlinux"
 
     # --- Reboot Check ---
     - name: Check if Debian reboot is required
