@@ -4,6 +4,10 @@
   gather_facts: true
 
   tasks:
+    - name: End playbook if we are running on a container
+      meta: end_playbook
+      when: ansible_virtualization_type is defined and ansible_virtualization_type == "container"
+
     # --- Debian / Ubuntu Family ---
     - name: Update apt cache and upgrade all packages (Debian/Ubuntu)
       ansible.builtin.apt:
