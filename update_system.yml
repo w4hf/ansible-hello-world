@@ -1,7 +1,6 @@
 ---
 - name: Update all packages on Linux hosts
   hosts: all
-  become: true
   gather_facts: true
 
   tasks:
@@ -13,6 +12,7 @@
         autoremove: true
         autoclean: true
       when: ansible_os_family == "Debian"
+      become: true
 
     # --- RedHat / Fedora / Rocky / AlmaLinux Family ---
     - name: Upgrade all packages (RHEL / CentOS / Rocky / Fedora)
@@ -21,6 +21,7 @@
         state: latest
         update_cache: true
       when: ansible_os_family == "RedHat"
+      become: true
 
     # --- SUSE / openSUSE Family ---
     # - name: Upgrade all packages (SUSE)
@@ -29,6 +30,7 @@
     #     state: latest
     #     update_cache: true
     #   when: ansible_os_family == "Suse"
+    #   become: true
 
     # --- Arch Linux Family ---
     # - name: Upgrade all packages (Arch Linux)
@@ -36,6 +38,7 @@
     #     update_cache: true
     #     upgrade: true
     #   when: ansible_os_family == "Archlinux"
+    #   become: true
 
     # --- Reboot Check ---
     - name: Check if Debian reboot is required
@@ -61,3 +64,4 @@
       when: >
         (debian_reboot_required.stat.exists is defined and debian_reboot_required.stat.exists) or
         (rhel_reboot_required.rc is defined and rhel_reboot_required.rc == 1)
+      become: true
