@@ -5,7 +5,7 @@
 
   tasks:
     - name: End playbook if we are running on a container
-      meta: end_playbook
+      meta: end_play
       when: ansible_virtualization_type is defined and ansible_virtualization_type == "container"
 
     # --- Debian / Ubuntu Family ---
