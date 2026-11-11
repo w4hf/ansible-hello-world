@@ -1,0 +1,63 @@
+---
+- name: Update all packages on Linux hosts
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    # --- Debian / Ubuntu Family ---
+    - name: Update apt cache and upgrade all packages (Debian/Ubuntu)
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+        autoremove: true
+        autoclean: true
+      when: ansible_os_family == "Debian"
+
+    # --- RedHat / Fedora / Rocky / AlmaLinux Family ---
+    - name: Upgrade all packages (RHEL / CentOS / Rocky / Fedora)
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: true
+      when: ansible_os_family == "RedHat"
+
+    # --- SUSE / openSUSE Family ---
+    - name: Upgrade all packages (SUSE)
+      ansible.builtin.zypper:
+        name: "*"
+        state: latest
+        update_cache: true
+      when: ansible_os_family == "Suse"
+
+    # --- Arch Linux Family ---
+    - name: Upgrade all packages (Arch Linux)
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+      when: ansible_os_family == "Archlinux"
+
+    # --- Reboot Check ---
+    - name: Check if Debian reboot is required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: debian_reboot_required
+      when: ansible_os_family == "Debian"
+
+    - name: Check if RHEL reboot is required
+      ansible.builtin.command: needs-restarting -r
+      register: rhel_reboot_required
+      failed_when: false
+      changed_when: false
+      when: ansible_os_family == "RedHat"
+
+    - name: Reboot server if kernel or core libraries were updated
+      ansible.builtin.reboot:
+        msg: "Rebooting system after package updates"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+      when: >
+        (debian_reboot_required.stat.exists is defined and debian_reboot_required.stat.exists) or
+        (rhel_reboot_required.rc is defined and rhel_reboot_required.rc == 1)
