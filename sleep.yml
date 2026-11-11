@@ -1,7 +1,12 @@
-- name: Sleep for 30 seconds
-  gather_facts: false
+---
+- name: Sleep for a given duration
   hosts: localhost
+  gather_facts: false
+  vars:
+    # Default duration in seconds (can be overridden via -e "sleep_seconds=15")
+    sleep_seconds: 10
+
   tasks:
-    - name: sleep
+    - name: Sleep for {{ sleep_seconds }} seconds
       ansible.builtin.pause:
-        seconds: 30
+        seconds: "{{ sleep_seconds | int }}"
